@@ -10,9 +10,13 @@ import {
 import useApi from "../hook/useApi";
 import { Register } from "../service/Auth.service";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterAction } from "../store/action/auth.action";
 
 const RegisterPage = () => {
   const nav = useNavigate();
+  // const { loading, error, data, auth } = useSelector((store) => store.auth);
+  // const dispatch = useDispatch();
   const { handleDealApi, loading, error, data } = useApi(Register);
 
   const [formData, setFormData] = useState({
@@ -34,8 +38,11 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // RegisterAction(dispatch, formData);
     handleDealApi(formData);
   };
+
+  console.log(loading, error, data);
 
   return (
     <PreventComponents fail={"/login"} check={localStorage.getItem("auth")}>
@@ -86,18 +93,18 @@ const RegisterPage = () => {
                   >
                     Register
                   </ButtonComponents>
-                  <div className="mt-5">
-                    <p>
-                      Already have an account?{" "}
-                      <button
-                        onClick={() => nav("/")}
-                        className="text-blue-400 underline"
-                      >
-                        Login
-                      </button>
-                    </p>
-                  </div>
                 </form>
+                <div className="mt-5">
+                  <p>
+                    Already have an account?{" "}
+                    <button
+                      onClick={() => nav("/")}
+                      className="text-blue-400 underline"
+                    >
+                      Login
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
           </>

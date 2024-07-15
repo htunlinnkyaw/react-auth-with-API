@@ -1,6 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { HomePage, LoginPage, NotfoundPage, RegisterPage } from "./page";
+import {
+  ContactAddPage,
+  ContactPage,
+  DetailContactPage,
+  HomePage,
+  LoginPage,
+  NotfoundPage,
+  RegisterPage,
+} from "./page";
 
 const App = () => {
   return (
@@ -8,7 +16,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />}>
+          <Route index element={<ContactPage />} />
+          <Route path="add" element={<ContactAddPage />} />
+          <Route path="contact/:id" element={<DetailContactPage />} />
+        </Route>
         <Route path="*" element={<NotfoundPage />} />
       </Routes>
     </main>
@@ -16,4 +28,3 @@ const App = () => {
 };
 
 export default App;
-

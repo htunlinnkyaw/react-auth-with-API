@@ -10,11 +10,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import useApi from "../hook/useApi";
 import { Login } from "../service/Auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginAction } from "../store/action/auth.action";
 
 const LoginPage = () => {
   const nav = useNavigate();
-
-  const { handleDealApi, loading, error, data } = useApi(Login);
+  const { loading, error, data, auth } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  // const { handleDealApi, loading, error, data } = useApi(Login);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -33,7 +36,13 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleDealApi(formData);
+    // handleDealApi(formData);
+    LoginAction(dispatch, formData);
+    console.log(loading, error, data);
+  };
+
+  const handleClick = () => {
+    nav("/register");
   };
 
   return (
@@ -73,15 +82,18 @@ const LoginPage = () => {
                   >
                     Login
                   </ButtonComponents>
-                  <div className="mt-5">
-                    <p>
-                      Don't have an account?{" "}
-                      <button className="text-blue-400 underline">
-                        Register
-                      </button>
-                    </p>
-                  </div>
                 </form>
+                <div className="mt-5">
+                  <p>
+                    Don't have an account?{" "}
+                    <button
+                      onClick={handleClick}
+                      className="text-blue-400 underline"
+                    >
+                      Register
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
           </>
