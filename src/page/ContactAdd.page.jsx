@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonComponents, FormComponents } from "../components";
-import { useNavigate } from "react-router-dom";
-import { addContactData } from "../service/Contact.service";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addContactData, editContactData } from "../service/Contact.service";
 
 const ContactAddPage = () => {
   const nav = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -12,14 +13,25 @@ const ContactAddPage = () => {
     address: "",
   });
 
+  useEffect(() => {
+    if (location.state?.edit) {
+      const { name, phone, email, address } = location.state.data;
+      setFormData({ name, phone, email, address });
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await addContactData();
+    let res;
+    if (location.state?.edit) {
+      res = await editContactData(location.state.id, formData);
+    } else {
+      res = await addContactData(formData);
+    }
 
     if (res) {
       nav("/home");

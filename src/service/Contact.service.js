@@ -42,3 +42,26 @@ export const getSingleData = async (id) => {
     return { error: true, msg: e.message };
   }
 };
+
+export const editContactData = async (id, formData) => {
+  try {
+    const res = await api.put(`/contact/${id}`, formData);
+    if (res.data) {
+      return true;
+    }
+    console.log(res);
+  } catch (e) {
+    return { error: true, msg: e.message };
+  }
+};
+
+export const deleteContact = async (id) => {
+  try {
+    const res = await api.delete(`/contact/${id}`);
+    if (res.data) {
+      return true;
+    }
+  } catch (e) {
+    return { error: true, msg: e.message };
+  }
+};
